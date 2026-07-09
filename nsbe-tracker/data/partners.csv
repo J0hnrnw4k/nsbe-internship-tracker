@@ -1,0 +1,2 @@
+id,name,connection_type,company,role,how_to_connect,notes
+example-entry,John Example,Alumni,Example Corp,Recruiter,https://linkedin.com/in/example,"REPLACE THIS ROW — connection_type should be one of: Alumni, Recruiter, Faculty Partner, Corporate Partner"

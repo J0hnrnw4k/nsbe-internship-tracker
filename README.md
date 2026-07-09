@@ -1,2 +1,0 @@
-# NSBE Internship Tracker
-

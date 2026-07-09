@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NSBE UTSA — Opportunity Hub</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="dark">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="mark">NSBE</span> UTSA <small>Opportunity Hub</small></div>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="opportunities">Opportunities</button>
+      <button class="tab-btn" data-tab="tracker">My Tracker</button>
+      <button class="tab-btn" data-tab="alumni">Wall of Success</button>
+      <button class="tab-btn" data-tab="network">Network</button>
+    </div>
+    <button class="icon-btn" id="btn-theme" title="Toggle theme"><i class="fa fa-moon"></i></button>
+  </div>
+</div>
+
+<div class="pulse" id="pulse-strip">
+  <div class="pulse-cell"><div class="pulse-num" id="pulse-open">—</div><div class="pulse-label">Open opportunities</div></div>
+  <div class="pulse-cell"><div class="pulse-num" id="pulse-new">—</div><div class="pulse-label">New this week</div></div>
+  <div class="pulse-cell"><div class="pulse-num" id="pulse-applied">—</div><div class="pulse-label">Applications logged</div></div>
+  <div class="pulse-cell"><div class="pulse-num" id="pulse-offers">—</div><div class="pulse-label">Offers landed</div></div>
+</div>
+
+<div class="page">
+
+  <!-- ============ OPPORTUNITIES ============ -->
+  <section class="page-section active" id="section-opportunities">
+    <div class="section-head">
+      <div>
+        <h2>Opportunities</h2>
+        <p class="section-sub">Internships, scholarships, fellowships &amp; externships curated for NSBE UTSA members.</p>
+      </div>
+      <p id="last-updated" class="footnote">Last updated: loading…</p>
+    </div>
+
+    <div class="toolbar" style="margin-bottom:18px;">
+      <input id="q" type="text" placeholder="Search company, role, location…" style="flex:1; min-width:200px;" />
+      <select id="category">
+        <option value="">All categories</option>
+        <option value="Internship">Internships</option>
+        <option value="Scholarship">Scholarships</option>
+        <option value="Fellowship">Fellowships</option>
+        <option value="Externship">Externships</option>
+      </select>
+      <select id="type">
+        <option value="">All pay types</option>
+        <option value="Paid">Paid</option>
+        <option value="Unpaid">Unpaid</option>
+        <option value="Co-op">Co-op</option>
+      </select>
+      <select id="window">
+        <option value="all">All deadlines</option>
+        <option value="open">Open only</option>
+        <option value="7">Closing ≤ 7 days</option>
+        <option value="30">Closing ≤ 30 days</option>
+        <option value="closed">Recently closed</option>
+      </select>
+      <button id="btn-refresh"><i class="fa fa-rotate"></i> Refresh</button>
+      <button id="btn-export"><i class="fa fa-download"></i> Export</button>
+    </div>
+
+    <h3 style="font-family:var(--font-display); font-size:1rem; color:var(--gold); margin-bottom:6px;">New This Week</h3>
+    <div id="new-grid"></div>
+
+    <h3 style="font-family:var(--font-display); font-size:1rem; color:var(--gold); margin:26px 0 6px;">Open &amp; Closing Soon</h3>
+    <div id="open-rows"></div>
+
+    <h3 style="font-family:var(--font-display); font-size:1rem; color:var(--gold); margin:26px 0 6px;">Recently Closed</h3>
+    <div id="closed-grid"></div>
+  </section>
+
+  <!-- ============ TRACKER ============ -->
+  <section class="page-section" id="section-tracker">
+    <div class="section-head">
+      <div>
+        <h2>My Tracker</h2>
+        <p class="section-sub">A shared board — no login. Every member's applications, visible to the whole chapter.</p>
+      </div>
+      <button class="primary" id="btn-add-application"><i class="fa fa-plus"></i> Log an application</button>
+    </div>
+
+    <div id="tracker-banner"></div>
+    <div class="kanban" id="kanban-board"></div>
+  </section>
+
+  <!-- ============ ALUMNI WALL ============ -->
+  <section class="page-section" id="section-alumni">
+    <div class="section-head">
+      <div>
+        <h2>Wall of Success</h2>
+        <p class="section-sub">Past members, and where NSBE UTSA took them. For when you need the reminder.</p>
+      </div>
+    </div>
+    <div class="alumni-grid" id="alumni-grid"></div>
+  </section>
+
+  <!-- ============ NETWORK ============ -->
+  <section class="page-section" id="section-network">
+    <div class="section-head">
+      <div>
+        <h2>Network</h2>
+        <p class="section-sub">Alumni, recruiters, faculty and corporate partners connected to NSBE UTSA.</p>
+      </div>
+    </div>
+    <div class="toolbar" style="margin-bottom:14px;">
+      <select id="network-filter">
+        <option value="">All connections</option>
+        <option value="Alumni">Alumni</option>
+        <option value="Recruiter">Recruiters</option>
+        <option value="Faculty Partner">Faculty Partners</option>
+        <option value="Corporate Partner">Corporate Partners</option>
+      </select>
+    </div>
+    <div id="network-rows"></div>
+  </section>
+
+</div>
+
+<!-- ============ LOG APPLICATION MODAL ============ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3>Log an application</h3>
+    <label for="f-name">Your name</label>
+    <input id="f-name" type="text" placeholder="e.g. Alex Rivera" />
+    <label for="f-company">Company</label>
+    <input id="f-company" type="text" placeholder="e.g. Cisco" />
+    <label for="f-role">Role</label>
+    <input id="f-role" type="text" placeholder="e.g. Software Engineering Intern" />
+    <label for="f-link">Link (optional)</label>
+    <input id="f-link" type="text" placeholder="https://…" />
+    <label for="f-status">Status</label>
+    <select id="f-status">
+      <option>Interested</option>
+      <option selected>Applied</option>
+      <option>Interviewing</option>
+      <option>Offer</option>
+      <option>Rejected</option>
+    </select>
+    <div class="modal-actions">
+      <button id="modal-cancel">Cancel</button>
+      <button class="primary" id="modal-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+<script src="tracker.js"></script>
+<script src="alumni.js"></script>
+<script src="partners.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
